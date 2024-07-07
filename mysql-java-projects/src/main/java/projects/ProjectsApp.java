@@ -12,10 +12,16 @@ import projects.service.ProjectService;
 public class ProjectsApp {
 	// Creates the scanner object for user input.
 	private Scanner scanner = new Scanner(System.in);
+	// Creates the object used in tandem with ProjectService.java
+	private ProjectService projectService = new ProjectService();
+	// Creates the object used to store current Projects.
+	private Project curProject = new Project();
 	// Uses overrides to prevent the formatter from reformatting the text within.
 	// @formatter:off
 	private List<String> operations = List.of(
-			"1) Add a project"
+			"1) Add a project",
+			"2) List projects",
+			"3) Select a project"
 	);
 	// @formatter:on
 
@@ -23,11 +29,6 @@ public class ProjectsApp {
 		// Starts the program, using the method: "processUserSelection"
 		new ProjectsApp().processUserSelection();
 
-	}
-	// Creates a method to be used at a later time.
-	private ProjectService projectService() {
-		
-		return null;
 	}
 	// Creates the method that processes the user input.
 	private void processUserSelection() {
@@ -48,6 +49,14 @@ public class ProjectsApp {
 					createProject();
 					break;
 				
+				case 2:
+					listProjects();
+					break;
+					
+				case 3:
+					selectProject();
+					break;
+				
 				default:
 					System.out.println("\n" + selection + " is not a valid selection. Try again.");
 					break;
@@ -59,6 +68,27 @@ public class ProjectsApp {
 				System.out.println("\nError: " + e + " Try again.");
 			}
 		}
+	}
+	private void selectProject() {
+		listProjects();
+		Integer projectId = getIntInput("Enter a project ID to select a project");
+		
+		curProject = null;
+		
+		curProject = projectService.fetchProjectById(projectId);
+		
+		if(Objects.isNull(curProject)) {
+			System.out.println("\nYou are not working with a project.");
+		} else {
+			System.out.println("\nYou are working with project: " + curProject);
+		}
+	}
+	private void listProjects() {
+		List<Project> projects = projectService.fetchAllProjects();
+		
+		System.out.println("\nProjects:");
+		
+		projects.forEach(project -> System.out.println("   " + project.getProjectId() + ": " + project.getProjectName()));
 	}
 	/* Create the method that creates the related Project within the console.
 	* Sets each object to a type and getter, sends a message asking for each object, 
