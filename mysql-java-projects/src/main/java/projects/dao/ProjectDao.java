@@ -222,7 +222,7 @@ String sql = "SELECT * FROM " + STEP_TABLE + " WHERE project_id = ?";
 		}
 	}
 	public boolean deleteProject(Integer projectId) {
-		String sql = "DELETE " + PROJECT_TABLE + " WHERE project_id = " + projectId;
+		String sql = "DELETE FROM " + PROJECT_TABLE + " WHERE project_id = ?";
 		try(Connection conn = DbConnection.getConnection()) {
 			startTransaction(conn);
 			

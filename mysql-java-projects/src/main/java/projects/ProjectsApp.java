@@ -87,11 +87,11 @@ public class ProjectsApp {
 		try {
 			projectService.deleteProject(projectId);
 			System.out.println("Project " + projectId + " has been successfully deleted.");
-			
-			if (projectId == curProject.getProjectId() && Objects.nonNull(curProject)) {
+
+			if (Objects.nonNull(curProject) && curProject.getProjectId().equals(projectId)) {
 				curProject = null;
 			}
-			
+
 		} catch (Exception e) {
 			throw new DbException(e);
 		}
